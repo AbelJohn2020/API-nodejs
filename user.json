@@ -1,7 +1,7 @@
 [
     { 
         "id": "001",
-        "users": [
+        "tickets": [
             {
                 "user_id": 1,
                 "name": "Abel",
@@ -38,7 +38,7 @@
     },
     { 
         "id": "002",
-        "users": [
+        "tickets": [
             {
                 "user_id": 1,
                 "name": "Andrea",

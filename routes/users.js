@@ -14,15 +14,38 @@ router.get('/:id', (req, res) => {
     res.json(user);
 });
 
+router.get('/:id/tickets', (req, res) => {
+    const { id } = req.params;
+    
+    const user = users.find( user => user.id === id);
+    const tickets = user.tickets;
+    res.json(tickets);
+});
+
+router.get('/:id/tickets/:user_id', (req, res) => {
+    const { id, user_id } = req.params;
+
+    const user = users.find( user => user.id === id);
+    const tickets = user.tickets;
+    const ticket = tickets.find(ticket => ticket.user_id === parseInt(user_id));
+    res.json(ticket);
+});
+
 router.post('/', (req, res) => {
-    const { user_id, name, lastname, nationality, document, identification } = req.body;
+    const body = req.body;
+
+    // res.json({
+    //     message: 'created',
+    //     data: body,
+    // })
+
     console.log(req.body)
 
-    if(user_id && name && lastname && nationality && document && identification) {
-        res.json('saved')
-    } else {
-        res.send('wrong')
-    }
+    // if(user_id && name && lastname && nationality && document && identification) {
+    //     res.json('saved')
+    // } else {
+    //     res.send('wrong')
+    // }
 })
 
 module.exports = router;

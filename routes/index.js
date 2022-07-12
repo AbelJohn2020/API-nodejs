@@ -1,9 +1,11 @@
 const { Router } = require("express");
+const users = require("./users");
 const router = Router();
 
-router.get('/api', (req, res) => {
-    res.json({'id': 1, name: 'Abel'})
-});
+function routerApi(app) {
+    app.use('/api', router)
+    router.use('/users', users);
+}
 
 
-module.exports = router;
+module.exports = routerApi;
