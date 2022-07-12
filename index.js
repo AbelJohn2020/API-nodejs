@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const routes = require('./routes');
+const users = require('./routes/users');
 
 const port = process.env.PORT;
 
@@ -20,15 +22,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //port
-const getPort = app.get('port')
+app.get('port')
 
 
 // routes
-app.get('/', (req, res) => {
-    res.json({'id': 1, name: 'Abel'})
-})
+app.use(routes);
+app.use('/api/users', users);
 
 // starting the server
-app.listen(getPort, () => {
-    console.log(`Server on port ${port}`);
+app.listen(app.get('port'), () => {
+    console.log(`Server on port ${app.get('port')}`);
 })

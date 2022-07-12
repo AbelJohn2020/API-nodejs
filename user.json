@@ -1,0 +1,60 @@
+[
+    { 
+        "id": "001",
+        "users": [
+            {
+                "user_id": 1,
+                "name": "Abel",
+                "lastname": "Arbildo",
+                "nationality": "pe",
+                "document": "dni",
+                "identification": "12345678"
+            },
+            {
+                "user_id": 2,
+                "name": "Antonio",
+                "lastname": "Arbildo",
+                "nationality": "peruano",
+                "document": "dni",
+                "identification": "12345678"
+            },
+            {
+                "user_id": 3,
+                "name": "Elias",
+                "lastname": "Arbildo",
+                "nationality": "ar",
+                "document": "dni",
+                "identification": "12345678"
+            },
+            {
+                "user_id": 4,
+                "name": "John",
+                "lastname": "Arbildo",
+                "nationality": "par",
+                "document": "dni",
+                "identification": "12345678"
+            }
+        ]
+    },
+    { 
+        "id": "002",
+        "users": [
+            {
+                "user_id": 1,
+                "name": "Andrea",
+                "lastname": "Leon",
+                "nationality": "pe",
+                "document": "dni",
+                "identification": "12345678"
+            },
+            {
+                "user_id": 2,
+                "name": "Maria",
+                "lastname": "Richi",
+                "nationality": "argentina",
+                "document": "dni",
+                "identification": "12345678"
+            }
+        ]
+    }
+]
