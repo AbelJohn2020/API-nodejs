@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
     //     data: body,
     // })
 
-    console.log(req.body)
+    console.log(req.body)   
 
     // if(user_id && name && lastname && nationality && document && identification) {
     //     res.json('saved')
