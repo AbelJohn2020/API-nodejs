@@ -3,30 +3,25 @@ const express = require('express');
 const morgan = require('morgan');
 const router = require('./routes');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
 
 const port = process.env.PORT;
-const username = process.env.USER;
+const username = process.env.NAME;
 const password = process.env.PASSWORD;
-const db = process.env.DB
+const db = process.env.DB;
 
 const uri = `mongodb+srv://${username}:${password}@cluster0.izid1.mongodb.net/${db}?retryWrites=true&w=majority`;
-
-// have a thing for
-// appetizing
-// overfishing
-// unsustainable
-// bycatch
-// spoil
-// en route
-// extinction
-// consumption
-// sanctuary
 
 mongoose.connect(uri)
     .then(() => console.log('Database conected'))
     .catch(e => console.log(e));
-
-const app = express();
 
 // settings
 app.set('port', port);
