@@ -1,33 +1,52 @@
 const { Router } = require("express");
-const users = require('../user.json');
+// const users = require('../user.json');
 const router = Router();
+const User = require('../models/user');
+const Ticket = require('../models/ticket');
 
+router.get('/', async (req, res) => {
+    try {
+        const dataUsers = await User.find();
+        console.log(dataUsers);
 
-router.get('/', (req, res) => {
-    res.json(users)
+        res.json(dataUsers)
+    } catch (error) {
+        console.log(error)
+    }
 });
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
+router.get('/:user_id', async (req, res) => {
+    const { user_id } = req.params;
+
+    const users = await User.find();
+    const user = users.find( user => user.user_id === user_id );
     
-    const user = users.find( user => user.id === id);
     res.json(user);
 });
 
-router.get('/:id/tickets', (req, res) => {
-    const { id } = req.params;
+router.get('/:user_id/:tickets_id', async (req, res) => {
+    const { user_id } = req.params;
     
-    const user = users.find( user => user.id === id);
-    const tickets = user.tickets;
+    const users = await User.find();
+    const user = users.find( user => user.user_id === user_id );
+
+    const getTickets = await Ticket.find();
+    const tickets = getTickets.find( ticket => ticket.tickets_id === user.tickets_id );
+
     res.json(tickets);
 });
 
-router.get('/:id/tickets/:user_id', (req, res) => {
-    const { id, user_id } = req.params;
+router.get('/:user_id/:tickets_id/:ticket_id', async (req, res) => {
+    const { user_id, ticket_id } = req.params;
 
-    const user = users.find( user => user.id === id);
-    const tickets = user.tickets;
-    const ticket = tickets.find(ticket => ticket.user_id === parseInt(user_id));
+    const users = await User.find();
+    const user = users.find( user => user.user_id === user_id );
+
+    const getTickets = await Ticket.find();
+    const tickets = getTickets.find( ticket => ticket.tickets_id === user.tickets_id );
+
+    const ticket = tickets.tickets.find( ticket => ticket.ticket_id === ticket_id);
+
     res.json(ticket);
 });
 
