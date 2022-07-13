@@ -1,8 +1,30 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
+const router = require('./routes');
+const mongoose = require('mongoose');
 
 const port = process.env.PORT;
+const username = process.env.USER;
+const password = process.env.PASSWORD;
+const db = process.env.DB
+
+const uri = `mongodb+srv://${username}:${password}@cluster0.izid1.mongodb.net/${db}?retryWrites=true&w=majority`;
+
+// have a thing for
+// appetizing
+// overfishing
+// unsustainable
+// bycatch
+// spoil
+// en route
+// extinction
+// consumption
+// sanctuary
+
+mongoose.connect(uri)
+    .then(() => console.log('Database conected'))
+    .catch(e => console.log(e));
 
 const app = express();
 
@@ -20,15 +42,13 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //port
-const getPort = app.get('port')
+app.get('port')
 
 
 // routes
-app.get('/', (req, res) => {
-    res.json({'id': 1, name: 'Abel'})
-})
+router(app);
 
 // starting the server
-app.listen(getPort, () => {
-    console.log(`Server on port ${port}`);
+app.listen(app.get('port'), () => {
+    console.log(`Server on port ${app.get('port')}`);
 })
