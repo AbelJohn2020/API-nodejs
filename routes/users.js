@@ -76,7 +76,8 @@ router.post('/', async (req, res) => {
         const newUsers = new User(body);
         await newUsers.save();
 
-        res.redirect('/');
+        const theNewUsers = await User.find();
+        res.json(theNewUsers);
     } catch (error) {
         console.log(error);
     }
@@ -98,8 +99,9 @@ router.post('/:user_id/:tickets_id', async (req, res) => {
             const newTickets = new Tickets(parms);
 
             await newTickets.save();
-            
-            res.redirect('/');
+
+            const theNewTickets = await Tickets.find();
+            res.json(theNewTickets);
         } else {
             return {
                 type: "error",
@@ -112,9 +114,57 @@ router.post('/:user_id/:tickets_id', async (req, res) => {
     }
 });
 
-router.patch('/', async (req, res) => {
+router.patch('/:user_id', async (req, res) => {
+    const { user_id } = req.params;
     const body = req.body;
-    console.log(body);
-})
+    
+    try {
+        const users = await User.find();
+        const getUser = users.filter(user => user.user_id === user_id);
+        if(getUser.length === 1) {
+            const updateUsers = await User.findOneAndUpdate({ user_id }, {$set: {...body, user: body.user}}, {new: true})
+            res.json(updateUsers);
+        } else {
+            return {
+                type: "error",
+                status: "404",
+                message: "Invalid user_id"
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+router.patch('/:user_id/:tickets_id/:ticket_id', async (req, res) => {
+    const { user_id, tickets_id, ticket_id } = req.params;
+    const body = req.body;
+    
+    try {
+        const users = await User.find();
+        const getUser = users.filter(user => user.user_id === user_id);
+        if(getUser.length === 1) {
+            const allTickets = await Tickets.find();
+            const arrTickets = allTickets.find(user => user.tickets_id === tickets_id)
+            const updateArrTickets = arrTickets.tickets.map(ticket => {
+                if(ticket.ticket_id === parseInt(ticket_id)) {
+                    return {...ticket, ...body}
+                } else {
+                    return ticket;
+                }
+            })
+            const updateTicket = await Tickets.findOneAndUpdate({ tickets_id }, {$set: { tickets: updateArrTickets }}, {new: true});
+            res.json(updateTicket);
+        } else {
+            return {
+                type: "error",
+                status: "404",
+                message: "Invalid user_id"
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
 
 module.exports = router;
