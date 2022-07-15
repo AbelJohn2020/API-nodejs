@@ -167,4 +167,41 @@ router.patch('/:user_id/:tickets_id/:ticket_id', async (req, res) => {
     }
 });
 
+router.delete('/:user_id', async (req, res ) => {
+    const { user_id } = req.params;
+    
+    try {
+        await User.findOneAndDelete({user_id})
+        const newUsers = await User.find();
+        res.json(newUsers);
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+router.delete('/:user_id/:tickets_id/:ticket_id', async (req, res) => {
+    const { user_id, tickets_id, ticket_id } = req.params;
+    const body = req.body;
+    
+    try {
+        const users = await User.find();
+        const getUser = users.filter(user => user.user_id === user_id);
+        if(getUser.length === 1) {
+            const allTickets = await Tickets.find();
+            const arrTickets = allTickets.find(user => user.tickets_id === tickets_id)
+            const deleteTicket = arrTickets.tickets.filter(ticket => ticket.ticket_id !== parseInt(ticket_id))
+            const updateTicket = await Tickets.findOneAndUpdate({ tickets_id }, {$set: { tickets: deleteTicket }}, {new: true});
+            res.json(updateTicket);
+        } else {
+            return {
+                type: "error",
+                status: "404",
+                message: "Invalid user_id"
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+
 module.exports = router;
